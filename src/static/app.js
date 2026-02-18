@@ -354,8 +354,10 @@ document.addEventListener("DOMContentLoaded", () => {
       name.includes("music") ||
       name.includes("theater") ||
       name.includes("drama") ||
+      name.includes("manga") ||
       desc.includes("creative") ||
-      desc.includes("paint")
+      desc.includes("paint") ||
+      desc.includes("comic")
     ) {
       return "arts";
     } else if (
@@ -598,6 +600,12 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `
         }
+        <div class="share-buttons">
+          <button class="share-button" data-activity="${name}" title="Share this activity">
+            <span class="share-icon">🔗</span>
+            <span>Share</span>
+          </button>
+        </div>
       </div>
     `;
 
@@ -616,6 +624,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
     }
+
+    // Add click handler for share button
+    const shareButton = activityCard.querySelector(".share-button");
+    shareButton.addEventListener("click", () => {
+      openShareModal(name, details);
+    });
 
     activitiesList.appendChild(activityCard);
   }
