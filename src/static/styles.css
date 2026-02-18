@@ -664,3 +664,90 @@ footer {
 #logout-button:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
+
+/* Share button styles */
+.share-buttons {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+}
+
+.share-button {
+  background: linear-gradient(145deg, #4a90e2, #357abd);
+  color: white;
+  padding: 6px 12px;
+  font-weight: bold;
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.share-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(74, 144, 226, 0.3);
+  background: linear-gradient(145deg, #357abd, #2a5f8f);
+}
+
+.share-icon {
+  font-size: 1rem;
+}
+
+/* Share modal styles */
+.share-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.share-option-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background-color: var(--surface);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: left;
+}
+
+.share-option-btn:hover {
+  background-color: var(--background);
+  border-color: var(--primary);
+  transform: translateX(5px);
+}
+
+.share-platform-icon {
+  font-size: 1.5rem;
+  min-width: 30px;
+  text-align: center;
+}
+
+#share-activity-name {
+  font-weight: bold;
+  color: var(--primary);
+  margin-bottom: 10px;
+}
+
+/* Activity card actions container */
+.activity-card-actions {
+  margin-top: auto;
+  padding-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
