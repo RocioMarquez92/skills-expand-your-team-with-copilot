@@ -219,9 +219,6 @@ section h3 {
 
 /* Activity Tag */
 .activity-tag {
-  position: absolute;
-  top: 8px;
-  right: 8px;
   background: #e8eaf6;
   color: #3949ab;
   font-size: 0.65rem;
@@ -692,35 +689,64 @@ footer {
   background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Dark mode toggle button */
-#dark-mode-toggle {
-  position: absolute;
-  top: 10px;
-  right: 15px;
+/* Difficulty Filter Styles */
+.difficulty-filters {
   display: flex;
-  align-items: center;
-  gap: 5px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 20px;
-  padding: 4px 12px;
-  font-size: 0.85rem;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.difficulty-filter {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 15px;
+  font-size: 0.75rem;
   cursor: pointer;
-  transition: background-color 0.2s;
-  border: none;
-  color: var(--primary-text);
+  transition: all 0.2s ease;
 }
 
-#dark-mode-toggle:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+.difficulty-filter.active {
+  background-color: var(--primary);
+  color: white;
+  border-color: var(--primary-dark);
 }
 
-.theme-icon {
-  font-size: 1rem;
+.difficulty-filter:hover {
+  background-color: var(--primary-light);
+  color: white;
 }
 
-/* Adjust user controls position when dark mode toggle is present */
-#user-controls {
+/* Difficulty Badge Styles */
+.activity-tags {
+  display: flex;
+  gap: 6px;
   position: absolute;
-  top: 10px;
-  right: 120px;
+  top: 8px;
+  right: 8px;
+}
+
+.difficulty-badge {
+  font-size: 0.65rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.difficulty-beginner {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.difficulty-intermediate {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+.difficulty-advanced {
+  background-color: #ffebee;
+  color: #c62828;
 }
