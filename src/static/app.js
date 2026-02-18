@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const activityInput = document.getElementById("activity");
   const closeRegistrationModal = document.querySelector(".close-modal");
 
+  // Dark mode elements
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  const themeIcon = document.querySelector(".theme-icon");
+  const themeText = document.getElementById("theme-text");
+
   // Search and filter elements
   const searchInput = document.getElementById("activity-search");
   const searchButton = document.getElementById("search-button");
@@ -43,6 +48,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Authentication state
   let currentUser = null;
+
+  // Dark mode functions
+  function initializeDarkMode() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+      updateDarkModeButton(true);
+    }
+  }
+
+  function toggleDarkMode() {
+    const isDarkMode = document.body.classList.toggle("dark-mode");
+    localStorage.setItem("theme", isDarkMode ? "dark" : "light");
+    updateDarkModeButton(isDarkMode);
+  }
+
+  function updateDarkModeButton(isDarkMode) {
+    if (isDarkMode) {
+      themeIcon.textContent = "☀️";
+      themeText.textContent = "Light";
+    } else {
+      themeIcon.textContent = "🌙";
+      themeText.textContent = "Dark";
+    }
+  }
 
   // Time range mappings for the dropdown
   const timeRanges = {
@@ -875,142 +905,11 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeRangeFilter,
   };
 
-  // Share modal functionality
-  function openShareModal(activityName, details) {
-    // Create share modal if it doesn't exist
-    let shareModal = document.getElementById("share-modal");
-    if (!shareModal) {
-      shareModal = document.createElement("div");
-      shareModal.id = "share-modal";
-      shareModal.className = "modal hidden";
-      shareModal.innerHTML = `
-        <div class="modal-content">
-          <span class="close-share-modal">&times;</span>
-          <h3>Share Activity</h3>
-          <p id="share-activity-name"></p>
-          <div class="share-options">
-            <button class="share-option-btn facebook-share" title="Share on Facebook">
-              <span class="share-platform-icon">📘</span>
-              <span>Facebook</span>
-            </button>
-            <button class="share-option-btn twitter-share" title="Share on X (Twitter)">
-              <span class="share-platform-icon">🐦</span>
-              <span>X (Twitter)</span>
-            </button>
-            <button class="share-option-btn whatsapp-share" title="Share on WhatsApp">
-              <span class="share-platform-icon">💬</span>
-              <span>WhatsApp</span>
-            </button>
-            <button class="share-option-btn email-share" title="Share via Email">
-              <span class="share-platform-icon">📧</span>
-              <span>Email</span>
-            </button>
-            <button class="share-option-btn copy-link" title="Copy link">
-              <span class="share-platform-icon">📋</span>
-              <span>Copy Link</span>
-            </button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(shareModal);
-
-      // Add close handler
-      const closeShareModal = shareModal.querySelector(".close-share-modal");
-      closeShareModal.addEventListener("click", () => {
-        shareModal.classList.remove("show");
-        setTimeout(() => {
-          shareModal.classList.add("hidden");
-        }, 300);
-      });
-
-      // Close when clicking outside
-      shareModal.addEventListener("click", (event) => {
-        if (event.target === shareModal) {
-          shareModal.classList.remove("show");
-          setTimeout(() => {
-            shareModal.classList.add("hidden");
-          }, 300);
-        }
-      });
-    }
-
-    // Set the activity name in the modal
-    const shareActivityName = document.getElementById("share-activity-name");
-    shareActivityName.textContent = activityName;
-
-    // Create shareable content
-    const shareText = `Check out ${activityName} at Mergington High School! ${details.description} Schedule: ${formatSchedule(details)}`;
-    const shareUrl = window.location.href;
-
-    // Add event listeners for share options
-    const facebookBtn = shareModal.querySelector(".facebook-share");
-    const twitterBtn = shareModal.querySelector(".twitter-share");
-    const whatsappBtn = shareModal.querySelector(".whatsapp-share");
-    const emailBtn = shareModal.querySelector(".email-share");
-    const copyLinkBtn = shareModal.querySelector(".copy-link");
-
-    // Remove existing listeners by cloning
-    const newFacebookBtn = facebookBtn.cloneNode(true);
-    const newTwitterBtn = twitterBtn.cloneNode(true);
-    const newWhatsappBtn = whatsappBtn.cloneNode(true);
-    const newEmailBtn = emailBtn.cloneNode(true);
-    const newCopyLinkBtn = copyLinkBtn.cloneNode(true);
-
-    facebookBtn.parentNode.replaceChild(newFacebookBtn, facebookBtn);
-    twitterBtn.parentNode.replaceChild(newTwitterBtn, twitterBtn);
-    whatsappBtn.parentNode.replaceChild(newWhatsappBtn, whatsappBtn);
-    emailBtn.parentNode.replaceChild(newEmailBtn, emailBtn);
-    copyLinkBtn.parentNode.replaceChild(newCopyLinkBtn, copyLinkBtn);
-
-    // Facebook share
-    newFacebookBtn.addEventListener("click", () => {
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareText)}`;
-      window.open(facebookUrl, "_blank", "width=600,height=400");
-    });
-
-    // Twitter/X share
-    newTwitterBtn.addEventListener("click", () => {
-      const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
-      window.open(twitterUrl, "_blank", "width=600,height=400");
-    });
-
-    // WhatsApp share
-    newWhatsappBtn.addEventListener("click", () => {
-      const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`;
-      window.open(whatsappUrl, "_blank");
-    });
-
-    // Email share
-    newEmailBtn.addEventListener("click", () => {
-      const subject = `Check out ${activityName} at Mergington High School`;
-      const body = `${shareText}\n\nLearn more: ${shareUrl}`;
-      const mailtoUrl = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailtoUrl;
-    });
-
-    // Copy link
-    newCopyLinkBtn.addEventListener("click", async () => {
-      try {
-        await navigator.clipboard.writeText(shareUrl);
-        showMessage("Link copied to clipboard!", "success");
-        shareModal.classList.remove("show");
-        setTimeout(() => {
-          shareModal.classList.add("hidden");
-        }, 300);
-      } catch (error) {
-        console.error("Failed to copy link:", error);
-        showMessage("Failed to copy link. Please try again.", "error");
-      }
-    });
-
-    // Show the modal
-    shareModal.classList.remove("hidden");
-    setTimeout(() => {
-      shareModal.classList.add("show");
-    }, 10);
-  }
+  // Dark mode toggle event listener
+  darkModeToggle.addEventListener("click", toggleDarkMode);
 
   // Initialize app
+  initializeDarkMode();
   checkAuthentication();
   initializeFilters();
   fetchActivities();
